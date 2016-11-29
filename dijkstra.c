@@ -96,8 +96,7 @@ void createGraph(int *a, int N) {
     for (col = 0; col < sqrt(N)/2+1; col++) { 
 	for(row = 0; row < sqrt(N); row++){
             if( col != row){
-                a[(int)(row*sqrt(N)) + col] = rand() % maxWeight; // assign random
-                a[(int)(col*sqrt(N)) + row] = a[(int)(row*sqrt(N)) + col]; 
+                a[(int)(row*sqrt(N)) + col] = rand() % maxWeight; // assign random 
             }
             else
                 a[(int)(row*sqrt(N)) + col] = 0;	// NO LOOPS
@@ -105,17 +104,26 @@ void createGraph(int *a, int N) {
     }
 };
 
-// driver function
-int main()
-{
-    int arr[V*V];
-    createGraph(arr, V*V);
 
-    int counter = sizeof(arr) / sizeof(int);
-    printf("%d\n", counter);
-    for(counter = 0; counter < 9; counter++) {
-        printf("%d:   %d\n", counter,  arr[counter]);
+void printGraph(int arr[], int size) {
+    int index;
+    for(index = 0; index < size; index++) {
+        if(((index + 1) % (int)sqrt(size)) == 0)
+            printf("%d\n", arr[index]);
+        else printf("%d ", arr[index]);
     }
-    dijkstra(arr,1);
+}
+
+// driver function
+int main(int argc, char *argv[]) {
+
+    const int numOfVertices =  atoi(argv[1]);    
+    const int arrayLength = numOfVertices * numOfVertices;
+    int arr[arrayLength]; // Initialize array that will hold graph
+    createGraph(arr, arrayLength); // Generate the graph & store in array
+    printGraph(arr, arrayLength); // Print the array
+
+
+//    dijkstra(arr,1);
     return 0;
 }
