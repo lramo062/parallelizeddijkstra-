@@ -2,12 +2,16 @@
 // The program is for adjacency matrix representation of the graph
   
 #include <stdio.h>
-#include <stdbool.h>
-#include <limits.h>
-  
+#include <stdlib.h>
+#include <stdbool.h> // FOR BOOLEAN TYPES
+#include <limits.h> // INF 
+#include <sys/time.h> // FOR SRAND
+#include <math.h> // for sqrt
+
 // Number of vertices in the graph
-#define V 9
-  
+#define V 3
+
+ 
 // A utility function to find the vertex with minimum distance value, from
 // the set of vertices not yet included in shortest path tree
 int minDistance(int dist[], bool sptSet[])
@@ -21,7 +25,8 @@ int minDistance(int dist[], bool sptSet[])
   
    return min_index;
 }
-  
+
+
 // A utility function to print the constructed distance array
 void printSolution(int dist[], int n)
 {
@@ -32,8 +37,9 @@ void printSolution(int dist[], int n)
   
 // Funtion that implements Dijkstra's single source shortest path algorithm
 // for a graph represented using adjacency matrix representation
-void dijkstra(int graph[V][V], int src)
+void dijkstra(int graph[V*V], int src)
 {
+    // initialize the array that holds the distance to each vertex.
      int dist[V];     // The output array.  dist[i] will hold the shortest
                       // distance from src to i
   
@@ -58,36 +64,58 @@ void dijkstra(int graph[V][V], int src)
        sptSet[u] = true;
   
        // Update dist value of the adjacent vertices of the picked vertex.
-       for (int v = 0; v < V; v++)
+       for (int v = 0; v < V; v++) {
   
          // Update dist[v] only if is not in sptSet, there is an edge from 
          // u to v, and total weight of path from src to  v through u is 
          // smaller than current value of dist[v]
-         if (!sptSet[v] && graph[u][v] && dist[u] != INT_MAX 
-                                       && dist[u]+graph[u][v] < dist[v])
-            dist[v] = dist[u] + graph[u][v];
+           if (!sptSet[v] && graph[(u*V) + v] && dist[u] != INT_MAX
+               && dist[u]+graph[(u*V) + v] < dist[v])
+               dist[v] = dist[u] + graph[(u*V) + v];
+       }
+       
+           
      }
   
      // print the constructed distance array
      printSolution(dist, V);
 }
-  
-// driver program to test above function
+
+/* this function creates a graph 
+ * and stores it in an array represention
+ * to be passed to the gpu easily
+ */
+void createGraph(int *a, int N) {
+
+    time_t t; // used for randomizing values
+    int col; 
+    int row;
+    int maxWeight = 100; // limit the weight an edge can have
+
+    srand((unsigned) time(&t)); // generate random
+    for (col = 0; col < sqrt(N)/2+1; col++) { 
+	for(row = 0; row < sqrt(N); row++){
+            if( col != row){
+                a[(int)(row*sqrt(N)) + col] = rand() % maxWeight; // assign random
+                a[(int)(col*sqrt(N)) + row] = a[(int)(row*sqrt(N)) + col]; 
+            }
+            else
+                a[(int)(row*sqrt(N)) + col] = 0;	// NO LOOPS
+        }
+    }
+};
+
+// driver function
 int main()
 {
-   /* create the example graph */
-   int graph[V][V] = {{0, 4, 0, 0, 0, 0, 0, 8, 0},
-                      {4, 0, 8, 0, 0, 0, 0, 11, 0},
-                      {0, 8, 0, 7, 0, 4, 0, 0, 2},
-                      {0, 0, 7, 0, 9, 14, 0, 0, 0},
-                      {0, 0, 0, 9, 0, 10, 0, 0, 0},
-                      {0, 0, 4, 14, 10, 0, 2, 0, 0},
-                      {0, 0, 0, 0, 0, 2, 0, 1, 6},
-                      {8, 11, 0, 0, 0, 0, 1, 0, 7},
-                      {0, 0, 2, 0, 0, 0, 6, 7, 0}
-                     };
-  
-    dijkstra(graph, 0);
+    int arr[V*V];
+    createGraph(arr, V*V);
 
+    int counter = sizeof(arr) / sizeof(int);
+    printf("%d\n", counter);
+    for(counter = 0; counter < 9; counter++) {
+        printf("%d:   %d\n", counter,  arr[counter]);
+    }
+    dijkstra(arr,1);
     return 0;
 }
