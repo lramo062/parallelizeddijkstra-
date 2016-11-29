@@ -30,7 +30,7 @@ void printSolution(int dist[], int V) {
 
 // ================== Function: dijkstra ====================
 // Funtion that implements Dijkstra's single source shortest path algorithm
-// for a graph represented using adjacency matrix representation
+// for a graph represented using array representation
 void dijkstra(int graph[], int src, int V)
 {
     // initialize the array that holds the distance to each vertex.
@@ -102,7 +102,7 @@ void createGraph(int *a, int N) {
 };
 
 // ================== Function: printGraph ====================
-// prints the graph as it would look in adjacency matrix representation
+// prints the graph as it would look in array representation
 void printGraph(int arr[], int size) {
     int index;
     printf("Graph:\n");
