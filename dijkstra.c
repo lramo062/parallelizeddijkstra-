@@ -8,10 +8,10 @@
 // ================== Function: minDistance ====================
 // A utility function to find the vertex with minimum distance value, from
 // the set of vertices not yet included in shortest path tree
-int minDistance(int dist[], bool sptSet[], int V)
+int minDistance(float dist[], bool sptSet[], int V)
 {
    // Initialize min value
-   int min = INT_MAX, min_index;
+   float min = INT_MAX, min_index;
   
    for (int v = 0; v < V; v++)
      if (sptSet[v] == false && dist[v] <= min)
@@ -22,19 +22,19 @@ int minDistance(int dist[], bool sptSet[], int V)
 
 // ================== Function: printSolution ====================
 // A utility function to print the constructed distance array
-void printSolution(int dist[], int V) { 
+void printSolution(float dist[], int V) { 
    printf("Vertex   Distance from Source\n");
    for (int i = 0; i < V; i++)
-      printf("%d \t\t %d\n", i, dist[i]);
+      printf("%d \t\t %.1f\n", i, dist[i]);
 }
 
 // ================== Function: dijkstra ====================
 // Funtion that implements Dijkstra's single source shortest path algorithm
 // for a graph represented using array representation
-void dijkstra(int graph[], int src, int V)
+void dijkstra(float graph[], int src, int V)
 {
     // initialize the array that holds the distance to each vertex.
-     int dist[V];     // The output array.  dist[i] will hold the shortest
+     float dist[V];     // The output array.  dist[i] will hold the shortest
                       // distance from src to i
   
      bool sptSet[V]; // sptSet[i] will true if vertex i is included in shortest
@@ -78,7 +78,7 @@ void dijkstra(int graph[], int src, int V)
 // ================== Function: createGraph ====================
 // creates a graph and stores it in array representation
 // toggle commented line for a symmetric graph
-void createGraph(int *a, int N) {
+void createGraph(float *a, int N) {
 
     time_t t; // used for randomizing values
     int col; 
@@ -103,27 +103,32 @@ void createGraph(int *a, int N) {
 
 // ================== Function: printGraph ====================
 // prints the graph as it would look in array representation
-void printGraph(int arr[], int size) {
+void printGraph(float arr[], int size) {
     int index;
-    printf("Graph:\n");
+    printf("\nGraph:\n");
     for(index = 0; index < size; index++) {
         if(((index + 1) % (int)sqrt(size)) == 0) {
-            printf("%3d\n", arr[index]);
+            printf("%5.1f\n", arr[index]);
         }
         else {
-            printf("%3d ", arr[index]);
+            printf("%5.1f ", arr[index]);
         }
     }
+    printf("\n");
 }
 
 // ================== Function: main ====================
 // driver function for the program
 int main(int argc, char *argv[]) {
+
+    int numOfVertices;
+    printf("Please enter the number of vertices for graph: ");
+    scanf("%d", &numOfVertices);
     
-    const int numOfVertices =  atoi(argv[1]);    
+//    const int numOfVertices =  atoi(argv[1]);    
     const int arrayLength = numOfVertices * numOfVertices;
     
-    int arr[arrayLength]; // Initialize array that will hold graph
+    float arr[arrayLength]; // Initialize array that will hold graph
 
     createGraph(arr, arrayLength); // Generate the graph & store in array
     printGraph(arr, arrayLength); // Print the array
