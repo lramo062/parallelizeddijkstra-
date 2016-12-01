@@ -1,5 +1,7 @@
 #include "header.h"
 #include "cpu.c"
+#include "gpu.c"
+
 // ================== Function: main ====================
 // driver function for the program
 int main() {
