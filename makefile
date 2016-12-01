@@ -8,9 +8,11 @@ cpu: cpu.c
 main: main.c
 	gcc -g -Wall -c  main.c
 
+# CREATE EXECUTABLE
 run:
-	gcc -o main main.o
+	gcc -o main main.c
 
+# CLEAN .o FILES
 clean:
 	rm *.o
 
