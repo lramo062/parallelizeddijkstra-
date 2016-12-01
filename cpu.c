@@ -1,9 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdbool.h> // FOR BOOLEAN TYPES
-#include <limits.h> // FOR INT_MAX IN DIJKSTRA
-#include <sys/time.h> // FOR RANDOMIZE GRAPH IN CREATE GRAPH
-#include <math.h> // FOR SQRT
+#include "header.h"
 
 // ================== Function: minDistance ====================
 // A utility function to find the vertex with minimum distance value, from
@@ -22,7 +17,8 @@ int minDistance(float *dist, bool *sptSet, int V)
 
 // ================== Function: printSolution ====================
 // A utility function to print the constructed distance array
-void printSolution(float *dist, int V) { 
+void printSolution(float *dist, int V)
+{ 
    printf("Vertex   Distance from Source\n");
    for (int i = 0; i < V; i++)
       printf("%d \t\t %.1f\n", i, dist[i]);
@@ -113,37 +109,3 @@ void printGraph(float *arr, int size) {
     }
     printf("\n");
 }
-
-
-// ================== Function: main ====================
-// driver function for the program
-int main(int argc, char *argv[]) {
-
-
-    // FETCH INPUT FROM USER
-    int numOfVertices; // # of vertices in the graph
-    printf("Please enter the number of vertices for graph: ");
-    scanf("%d", &numOfVertices);
-    const int arrayLength = numOfVertices * numOfVertices;
-
-    float* result = (float *) malloc(sizeof(float) * numOfVertices);
-    // HOST COPY
-    float* graph = (float *) malloc(arrayLength * sizeof(float));
-
-    // DEVICE COPY
-    // float* d_graph;
-    // allocate memory for the graph
-    // cudaMalloc((void **) &d_graph, (arrayLength * sizeof(float)));
-
-    // FUNCTION CALLS (CPU)
-    createGraph(graph, arrayLength); // Generate the graph & store in array
-    printGraph(graph, arrayLength); // Print the array
-    dijkstra(graph, 1, numOfVertices, result); 
-    printSolution(result, numOfVertices);
-    
-    // FUNCTION CALLS (GPU)
-    /* cudaMemcpy(d_graph, &graph, (arrayLength * sizeof(float)), cudaMemcpyHostToDevice); */
-    /* cudaFree(d_graph); */
-    return 0;
-}
-   
