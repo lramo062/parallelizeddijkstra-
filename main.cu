@@ -1,6 +1,6 @@
 #include "header.h"
-#include "cpu.c"
-#include "gpu.c"
+#include "cpu.cu"
+#include "gpu.cu"
 
 // ================== Function: main ====================
 // driver function for the program
@@ -32,4 +32,3 @@ int main() {
     /* cudaFree(d_graph); */
     return 0;
 }
-   

@@ -4,7 +4,7 @@
 #include <limits.h> // FOR INT_MAX IN DIJKSTRA
 #include <sys/time.h> // FOR RANDOMIZE GRAPH IN CREATE GRAPH
 #include <math.h> // FOR SQRT
-
+#include <time.h>
 
 
 int minDistance(float *dist, bool *sptSet, int V);

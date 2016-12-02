@@ -1,20 +1,20 @@
 all: cpu gpu main run clean
 
 # CPU
-cpu: cpu.c
-	gcc -g -Wall -c  cpu.c
+cpu: cpu.cu
+	nvcc -g -c  cpu.cu -lm
 
 # GPU
-gpu: gpu.c
-	gcc -g -Wall -c gpu.c
+gpu: gpu.cu
+	nvcc -g -c gpu.cu -lm
 
 # MAIN
-main: main.c
-	gcc -g -Wall -c  main.c
+main: main.cu
+	nvcc -g -c  main.cu -lm 
 
 # CREATE EXECUTABLE
 run:
-	gcc -o main main.c
+	nvcc -o main main.cu -lm
 
 # CLEAN .o FILES
 clean:
