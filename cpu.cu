@@ -85,7 +85,7 @@ void createGraph(float *arr, int N) {
                 arr[(int)(row*sqrt(N)) + col] = rand() % maxWeight; // assign random
 
                 // have a symmetric graph
-                //a[(int)(col*sqrt(N)) + row] = a[(int)(row*sqrt(N)) + col];
+                arr[(int)(col*sqrt(N)) + row] = arr[(int)(row*sqrt(N)) + col];
             }
             else
                 arr[(int)(row*sqrt(N)) + col] = 0; // NO LOOPS
