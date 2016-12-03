@@ -42,6 +42,7 @@ __global__ void gpu_dijkstra(float *graph, bool *sptSet, float *result) {
              && result[min_index]+graph[(min_index*blockDim.x) + index] < result[index])
            result[index] = result[min_index] + graph[(min_index*blockDim.x) + index];
 
+         else printf("can not find min");
          __syncthreads();
        }
        __syncthreads();

@@ -38,10 +38,6 @@ int main() {
     printSolution(result, *numOfVertices);
 
 
-
-
-
-
     
     // ALLOCATE GPU MEMORY 
     float *d_graph, *d_result;
@@ -59,13 +55,6 @@ int main() {
     // COPY GPU MEM GPU --> CPU
     cudaMemcpy(result, d_result, (*arrayLength * sizeof(float)), cudaMemcpyDeviceToHost); 
     printGraph(result, *arrayLength);
-
-
-
-
-
-
-
 
 
     
