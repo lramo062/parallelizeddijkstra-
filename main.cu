@@ -18,7 +18,7 @@ int main() {
 
     // CPU MEMORY
     float* graph = (float *) malloc(*arrayLength * sizeof(float));
-    float* result = (float *) malloc(*numOfVertices * sizeof(float));
+    float* result = (float *) malloc(*arrayLength * sizeof(float));
         
     // FUNCTION CALLS (CPU)
     createGraph(graph, *arrayLength); // Generate the graph & store in array
@@ -43,8 +43,13 @@ int main() {
     cudaMemcpy(d_arrayLength, &arrayLength, (*arrayLength * sizeof(float)), cudaMemcpyHostToDevice);
     cudaMemcpy(d_graph, &graph, (*arrayLength * sizeof(float)), cudaMemcpyHostToDevice);
     
+   
+    //gpu_dijkstra<<<1,1>>>(d_graph,index,d_sptSet,*numOfVertices,d_result);
+      
+      
+    // COPY GPU MEM GPU --> CPU
+    //cudaMemcpy(result, &d_result, (*arrayLength * sizeof(float)), cudaMemcpyDeviceToHost); 
     
-
     // FREE GPU MEM
     cudaFree(d_graph);
     cudaFree(d_numOfVertices);

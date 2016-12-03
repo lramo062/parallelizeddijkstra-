@@ -3,7 +3,7 @@
 // ================== Function: dijkstra ====================
 // Funtion that implements Dijkstra's single source shortest path algorithm
 // for a graph represented using array representation
-__global__ void gpu_dijkstra(float *graph, int *src, bool *sptSet, int V, float *result)
+__global__ void gpu_dijkstra(float *graph, int src, bool *sptSet, int V, float *result)
 {
 
      int *min_index;
@@ -13,7 +13,7 @@ __global__ void gpu_dijkstra(float *graph, int *src, bool *sptSet, int V, float 
         result[i] = INT_MAX, sptSet[i] = false;
   
      // Distance of source vertex from itself is always 0
-     result[*src] = 0;
+     result[src] = 0;
   
      // Find shortest path for all vertices
      for (int count = 0; count < V-1; count++)
