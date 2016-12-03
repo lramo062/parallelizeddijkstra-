@@ -12,3 +12,5 @@ void printSolution(float *dist, int V);
 void dijkstra(float *graph, int src, int V, float *result);
 void createGraph(float *arr, int N);
 void printGraph(float *arr, int size);
+void gpu_minDistance(float *dist, bool *sptSet, float *min_index, int *V);
+//void gpu_dijkstra(float *graph, int *src, int *V, float *result);

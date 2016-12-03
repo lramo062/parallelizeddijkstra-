@@ -29,10 +29,12 @@ int main() {
 
     // GPU MEMORY ALLOCATION
     int *d_numOfVertices, *d_arrayLength;
-    float* d_graph, d_result;
+    float *d_graph, *d_result;
+    bool *d_sptSet;
 
     cudaMalloc((void **) &d_numOfVertices, sizeof(int));
     cudaMalloc((void **) &d_arrayLength, sizeof(int));
+    cudaMalloc((void **) &d_sptSet, (*numOfVertices * sizeof(bool)));
     cudaMalloc((void **) &d_graph, (*arrayLength * sizeof(float)));
     cudaMalloc((void **) &d_result, (*numOfVertices * sizeof(float)));
 
