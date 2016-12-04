@@ -23,7 +23,8 @@ int main() {
     // ALLOCATE CPU MEMORY
     float* graph = (float *) malloc(*arrayLength * sizeof(float));
     float* result = (float *) malloc(*arrayLength * sizeof(float));
-        
+    bool* sptSet = (bool *) malloc(*arrayLength * sizeof(bool));
+    
     // FUNCTION CALLS (CPU)
     createGraph(graph, *arrayLength); // Generate the graph & store in array
     printGraph(graph, *arrayLength); // Print the array
@@ -48,25 +49,34 @@ int main() {
     cudaMalloc((void **) &d_result, (*arrayLength * sizeof(float)));
     
     // COPY CPU MEM --> GPU MEM
-    cudaMemcpy(d_graph, &graph, (*arrayLength * sizeof(float)), cudaMemcpyHostToDevice);
+    cudaMemcpy(d_graph, graph, (*arrayLength * sizeof(float)), cudaMemcpyHostToDevice);
     
-    gpu_dijkstra<<<*numOfVertices,*numOfVertices>>>(d_graph, d_sptSet,d_result);
-      
-    // COPY GPU MEM GPU --> CPU
-    cudaMemcpy(result, d_result, (*arrayLength * sizeof(float)), cudaMemcpyDeviceToHost); 
+    gpu_setUpGraph<<<*numOfVertices,*numOfVertices>>>(d_graph, d_sptSet, d_result);
+
+
+    
+    for(int i =0; i<*numOfVertices; i++) {
+        // has to be done in a for-loop
+        gpu_findMinDistance<<<*numOfVertices,*numOfVertices>>>(d_graph,d_sptSet,d_result);
+        gpu_updateResult<<<*numOfVertices, *numOfVertices>>>(d_graph, d_sptSet, d_result);
+    }
+
+    
+    cudaMemcpy(result, d_result, (*arrayLength * sizeof(float)), cudaMemcpyDeviceToHost);
     printGraph(result, *arrayLength);
-
-
     
+   
     // FREE GPU MEM
     cudaFree(d_graph);
     cudaFree(d_result);
+    cudaFree(d_sptSet);
  
     // FREE CPU MEM
     free(numOfVertices);
     free(arrayLength);
     free(graph);
     free(result);
+    free(sptSet);
     
     return 0;
 }
