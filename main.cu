@@ -2,81 +2,72 @@
 #include "cpu.cu"
 #include "gpu.cu"
 
-// ================== Function: main ====================
-// driver function for the program
+
 int main() {
 
-    int *numOfVertices = (int *) malloc(sizeof(int)); // # of vertices in the graph
+    /**************************** TAKE USER INPUT *****************************/
+    
+    int *numOfVertices = (int *) malloc(sizeof(int));
     int *arrayLength = (int *) malloc(sizeof(int));
 
     // PROMPT USER FOR # OF VERTICES
     printf("Enter the number of vertices for graph: ");
     scanf("%d", numOfVertices);
 
+    // WILL BE AN ARRAY REPRESENTATION OF A MATRIX
     *arrayLength = *numOfVertices * *numOfVertices;
 
 
+    /***************************** CPU DIJKSTRA  ******************************/
 
-
-
-    
     // ALLOCATE CPU MEMORY
     float* graph = (float *) malloc(*arrayLength * sizeof(float));
     float* result = (float *) malloc(*arrayLength * sizeof(float));
-    bool* sptSet = (bool *) malloc(*arrayLength * sizeof(bool));
-    
-    // FUNCTION CALLS (CPU)
+
     createGraph(graph, *arrayLength); // Generate the graph & store in array
     printGraph(graph, *arrayLength); // Print the array
 
-    dijkstra(graph, 0, *numOfVertices, result); 
-    printSolution(result, *numOfVertices);
-    
-    dijkstra(graph, 1, *numOfVertices, result); 
-    printSolution(result, *numOfVertices);
-
-    dijkstra(graph, 2, *numOfVertices, result); 
-    printSolution(result, *numOfVertices);
-
-
-    
-    // ALLOCATE GPU MEMORY 
-    float *d_graph, *d_result;
-    bool *d_sptSet;
-
-    cudaMalloc((void **) &d_sptSet, (*arrayLength * sizeof(bool)));
-    cudaMalloc((void **) &d_graph, (*arrayLength * sizeof(float)));
-    cudaMalloc((void **) &d_result, (*arrayLength * sizeof(float)));
-    
-    // COPY CPU MEM --> GPU MEM
-    cudaMemcpy(d_graph, graph, (*arrayLength * sizeof(float)), cudaMemcpyHostToDevice);
-    
-    gpu_setUpGraph<<<*numOfVertices,*numOfVertices>>>(d_graph, d_sptSet, d_result);
-
-
-    
-    for(int i =0; i<*numOfVertices; i++) {
-        // has to be done in a for-loop
-        gpu_findMinDistance<<<*numOfVertices,*numOfVertices>>>(d_graph,d_sptSet,d_result);
-        gpu_updateResult<<<*numOfVertices, *numOfVertices>>>(d_graph, d_sptSet, d_result);
+    for(int j = 0; j<*numOfVertices; j++) {
+        dijkstra(graph, j, *numOfVertices, result); 
+        printSolution(result, *numOfVertices);
     }
 
+    /***************************** GPU DIJKSTRA  ******************************/
     
+    // initialize the varibles needed in the gpu
+    float *d_graph, *d_result;
+    bool *d_visited;
+
+    // allocate memory in the gpu for our variables
+    cudaMalloc((void **) &d_graph, (*arrayLength * sizeof(float)));
+    cudaMalloc((void **) &d_result, (*arrayLength * sizeof(float)));
+    cudaMalloc((void **) &d_visited, (*arrayLength * sizeof(bool)));
+    
+    // copy graph generated in the cpu to the gpu
+    cudaMemcpy(d_graph, graph, (*arrayLength * sizeof(float)), cudaMemcpyHostToDevice);
+
+    // set up the graph using multiple cores & threads
+    gpu_setUpGraph<<<*numOfVertices,*numOfVertices>>>(d_result, d_visited);
+
+    // perform dijstra on ALL vertices as src vertex using multiple cores
+    gpu_dijkstra<<<*numOfVertices,1>>>(d_graph,d_result, d_visited, *numOfVertices);
+
+    // copy the results back to cpu
     cudaMemcpy(result, d_result, (*arrayLength * sizeof(float)), cudaMemcpyDeviceToHost);
     printGraph(result, *arrayLength);
+
     
-   
-    // FREE GPU MEM
+    // free the gpu memory
     cudaFree(d_graph);
     cudaFree(d_result);
-    cudaFree(d_sptSet);
+    cudaFree(d_visited);
+
  
-    // FREE CPU MEM
+    // free the cpu memory
     free(numOfVertices);
     free(arrayLength);
     free(graph);
     free(result);
-    free(sptSet);
-    
+  
     return 0;
 }

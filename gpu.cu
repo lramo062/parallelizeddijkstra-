@@ -1,43 +1,50 @@
 #include "header.h"
 
-// ================== Function: dijkstra ====================
-// Funtion that implements Dijkstra's single source shortest path algorithm
-// for a graph represented using array representation
-__global__ void gpu_setUpGraph(float *graph, bool *sptSet, float *result) {
+// ================== Function: gpu_setUpGraph ====================
+// initializes all the unvisted vertices as infinity
+// marks all vertices not visited
+// sets the weight of distance to itself as 0
+// all done in multiple cores / threads
+__global__ void gpu_setUpGraph(float *result, bool *visited) {
 
      // Initialize all distances as INFINITE and stpSet[] as false
      int index = threadIdx.x + blockIdx.x * blockDim.x;
 
+     visited[index] = false;
+     
      if(index == ((blockDim.x * blockIdx.x) + blockIdx.x))
        result[index] = 0; // distance to itself is always 0
 
-     else result[index] = INT_MAX; // else initialize infinite
-     
-     sptSet[index] = false; // is shortest
-     __syncthreads();
-}
-
-__global__ void gpu_findMinDistance(float* graph, bool* sptSet, float* result) {
-
-    int min = INT_MAX;
-    int index = threadIdx.x + blockIdx.x * blockDim.x;
-    if(sptSet[index] == false && result[index] < min) {
-        min = result[index];
-        sptSet[index] = true;
-    }
-    __syncthreads(); // sync the threads, is Neccessary!
+     else result[index] = INT_MAX;
 }
 
 
-__global__ void gpu_updateResult(float* graph, bool* sptSet, float* result) {
+// ================== Function: gpu_dijkstra ====================
+// performs dijkstra's algorithm for every vertice in the graph in separate cores
+__global__ void gpu_dijkstra(float *graph, float *result, bool* visited, int V) {
 
-    int index = threadIdx.x + blockIdx.x * blockDim.x;
-    if(!sptSet[index] && graph[index] && result[index] != INT_MAX &&
-       result[index] + graph[index] < result[index]) {
-        
-        result[index] = result[index] + graph[index];
+    // Find shortest path for all vertices
+    for (int count = 0; count < V-1; count++)
+    {
+        // Pick the minimum distance vertex from the set of vertices not
+        // yet processed.
+        int min = INT_MAX, u;
+        for (int v = 0; v < V; v++)
+            if (visited[(V * blockIdx.x) + v] == false && result[(V *blockIdx.x) +  v] <= min)
+                min = result[(V * blockIdx.x) + v], u = v;
+  
+        // Mark the picked vertex as processed
+        visited[(V * blockIdx.x) + u] = true;
+  
+        // Update the wieght value 
+        for (int v = 0; v < V; v++) {
+  
+            // Update only if is not in visited, there is an edge from 
+            // u to v, and total weight of path from src to  v through u is 
+            // smaller than current value
+            if (!visited[(V * blockIdx.x) + v] && graph[(u*V) + v] && result[(V * blockIdx.x) + u] != INT_MAX
+                && result[(V * blockIdx.x) + u] + graph[(u*V) + v] < result[(V * blockIdx.x) + v])
+                result[(V * blockIdx.x) + v] = result[(V*blockIdx.x) + u] + graph[(u*V) + v];
+        }
     }
-
-    __syncthreads();
-
-};
+}
