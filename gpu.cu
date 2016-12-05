@@ -48,3 +48,34 @@ __global__ void gpu_dijkstra(float *graph, float *result, bool* visited, int V) 
         }
     }
 }
+
+
+// // ================== Function: gpu_dijkstra ==================== (NOT WORKING)
+// // performs dijkstra's algorithm for every vertice in the graph in separate cores
+// __global__ void gpu_dijkstra_multi_threaded(float *graph, float *result, bool* visited, int V) {
+
+//     // Find shortest path for all vertices
+//     for (int count = 0; count < V-1; count++)
+//     {
+//         // Pick the minimum distance vertex from the set of vertices not
+//         // yet processed.
+//         int min = INT_MAX, u;
+//         if (visited[(V * blockIdx.x) + threadIdx.x] == false && result[(V *blockIdx.x) +  threadIdx.x] <= min)
+//                 min = result[(V * blockIdx.x) + threadIdx.x], u = threadIdx.x;
+  
+//         // Mark the picked vertex as processed
+//         visited[(V * blockIdx.x) + u] = true;
+
+//         __syncthreads();
+//         // Update the wieght value 
+//         // Update only if is not in visited, there is an edge from 
+//         // u to v, and total weight of path from src to  v through u is 
+//         // smaller than current value
+//         if (!visited[(V * blockIdx.x) + threadIdx.x] && graph[(u*V) + threadIdx.x] && result[(V * blockIdx.x) + u] != INT_MAX
+//             && result[(V * blockIdx.x) + u] + graph[(u*V) + threadIdx.x] < result[(V * blockIdx.x) + threadIdx.x])
+//             result[(V * blockIdx.x) + threadIdx.x] = result[(V*blockIdx.x) + u] + graph[(u*V) + threadIdx.x];
+
+//         __syncthreads();
+//     }
+   
+// }

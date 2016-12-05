@@ -51,7 +51,7 @@ int main() {
 
     // perform dijstra on ALL vertices as src vertex using multiple cores
     gpu_dijkstra<<<*numOfVertices,1>>>(d_graph,d_result, d_visited, *numOfVertices);
-
+   
     // copy the results back to cpu
     cudaMemcpy(result, d_result, (*arrayLength * sizeof(float)), cudaMemcpyDeviceToHost);
     printGraph(result, *arrayLength);
