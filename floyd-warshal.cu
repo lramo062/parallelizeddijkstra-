@@ -148,6 +148,7 @@ int main(int argc, char **argv) {
     //gettimeofday(&second, &tzp);
     cudaEventRecord(stop);
     cudaEventSynchronize(stop);
+    cudaEventElapsedTime(&milliseconds, start, stop);
     if (first.tv_usec > second.tv_usec) {
         second.tv_usec += 1000000;
         second.tv_sec--;
