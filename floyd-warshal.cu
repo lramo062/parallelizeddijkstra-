@@ -55,7 +55,7 @@ int main(int argc, char **argv) {
 
     cudaEvent_t start,stop;
     cudaEventCreate(&start);
-    cudaEventCreate(%stop);
+    cudaEventCreate(&stop);
     float milliseconds = 0;
 
     printf("\n");
