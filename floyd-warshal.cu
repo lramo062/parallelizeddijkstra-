@@ -2,11 +2,11 @@
 #include <stdio.h>
 #include <math.h>
 #include <stdlib.h>
-#include  <time.h>
+#include <time.h>
 #include <sys/time.h>
 
 #define inf 9999
-#define N 500
+#define N 1000
 
 __global__ void funct(int n, int k, float* x, int* qx) {
 
@@ -52,6 +52,11 @@ int main(int argc, char **argv) {
     int k = 0;
     //int n = atoi(argv[1]);
     int n = N;
+
+    cudaEvent_t start,stop;
+    cudaEventCreate(&start);
+    cudaEventCreate(%stop);
+    float milliseconds = 0;
 
     printf("\n");
     printf("RUNNING WITH %d VERTICES \n", n);
@@ -133,13 +138,16 @@ int main(int argc, char **argv) {
     printf(" \n");
     printf("BLOCKS :   %d      GPU THREADS:     %d \n", bk, gputhreads);
     printf(" \n");
-    gettimeofday(&first, &tzp);
+    //gettimeofday(&first, &tzp);
+    cudaEventRecord(start); 
     funct << <bk, gputhreads>>>(n, k, dev_x, dev_qx);
     for (k = 1; k < n; k++) {
         funct2 << <bk, gputhreads>>>(n, k, dev_x, dev_qx);
     }
     cudaThreadSynchronize();
-    gettimeofday(&second, &tzp);
+    //gettimeofday(&second, &tzp);
+    cudaEventRecord(stop);
+    cudaEventSynchronize(stop)
     if (first.tv_usec > second.tv_usec) {
         second.tv_usec += 1000000;
         second.tv_sec--;
@@ -147,7 +155,7 @@ int main(int argc, char **argv) {
 
     lapsed.tv_usec = second.tv_usec - first.tv_usec;
     lapsed.tv_sec = second.tv_sec - first.tv_sec;
-    printf("GPU Calculation Time elapsed: %lu, %lu s\n", lapsed.tv_sec, lapsed.tv_usec);
+    printf("GPU Calculation Time elapsed: %.20f\n", milliseconds * .0001);
     printf("\n");
 
     
