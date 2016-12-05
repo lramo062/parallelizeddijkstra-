@@ -1,4 +1,4 @@
-all: cpu gpu main run clean
+all: cpu gpu main floyd run clean
 
 # CPU
 cpu: cpu.cu
@@ -14,7 +14,11 @@ main: main.cu
 
 # CREATE EXECUTABLE
 run:
-	nvcc -o main main.cu -lm
+	nvcc -o dijk main.cu -lm
+	nvcc -o floyd floyd-warshal.cu -lm 
+
+floyd:
+	nvcc -g -c floyd-warshal.cu -lm
 
 # CLEAN .o FILES
 clean:

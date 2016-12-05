@@ -50,7 +50,7 @@ __global__ void gpu_dijkstra(float *graph, float *result, bool* visited, int V) 
 }
 
 
-// // ================== Function: gpu_dijkstra ==================== (NOT WORKING)
+// // ================== Function: gpu_dijkstra_mutli_threaded ==================== (NOT WORKING)
 // // performs dijkstra's algorithm for every vertice in the graph in separate cores
 // __global__ void gpu_dijkstra_multi_threaded(float *graph, float *result, bool* visited, int V) {
 

@@ -16,11 +16,12 @@ int minDistance(float *dist, bool *sptSet, int V)
 
 // ================== Function: printSolution ====================
 // A utility function to print the constructed distance array
-void printSolution(float *dist, int V)
-{ 
-   printf("Vertex   Distance from Source\n");
-   for (int i = 0; i < V; i++)
-      printf("%d \t\t %.1f\n", i, dist[i]);
+void printSolution(int src, float *dist, int V) { 
+
+    printf("\nVertex   Distance from Source: %d\n", src);
+    for (int i = 0; i < V; i++) {
+        printf("%d \t\t %.1f\n", i, dist[i]);
+    }
 }
 
 // ================== Function: dijkstra ====================
@@ -39,7 +40,7 @@ void dijkstra(float *graph, int src, int V, float *result)
      // Distance of source vertex from itself is always 0
      result[src] = 0;
   
-     // Find shortest path for all vertices
+     // Find shortest path from src
      for (int count = 0; count < V-1; count++)
      {
        // Pick the minimum distance vertex from the set of vertices not
