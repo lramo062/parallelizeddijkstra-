@@ -147,7 +147,7 @@ int main(int argc, char **argv) {
     cudaThreadSynchronize();
     //gettimeofday(&second, &tzp);
     cudaEventRecord(stop);
-    cudaEventSynchronize(stop)
+    cudaEventSynchronize(stop);
     if (first.tv_usec > second.tv_usec) {
         second.tv_usec += 1000000;
         second.tv_sec--;
