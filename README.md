@@ -1,3 +1,3 @@
 # parallelizeddijkstra-
-An attempt to parallelize Dijkstra's ALgorithm on the GPU using CUDA C.
+An attempt to parallelize Dijkstra's Algorithm on the GPU using CUDA C.
 
