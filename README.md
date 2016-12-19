@@ -17,16 +17,16 @@ The Floyd-Warshall Algorithm was found at https://github.com/akintsakis/apspFloy
 
 ## Getting Started
 
-Clone the repo: git clone https://github.com/lramo062/parallelizeddijkstra-
-cd into the directory and run make: $ make
-to run dijkstra on both the cpu and gpu run: ./dijk
-to run floy-warshal run: ./floyd
+* Clone the repo: git clone https://github.com/lramo062/parallelizeddijkstra-
+* cd into the directory and run make: $ make
+* to run dijkstra on both the cpu and gpu run: ./dijk
+* to run floy-warshal run: ./floyd
 
 You can play around with the code to display the random generated graph as well as the result graph:
 ![Alt text] (https://github.com/lramo062/parallelizeddijkstra-/blob/master/img/Screenshot%20from%202016-12-19%2012-25-21.png)
 
-The first matrix represents the randomly generated graph.
-The second matrix represents the shortest path from all the nodes in the graph (Done in the GPU).
+* The first matrix represents the randomly generated graph.
+* The second matrix represents the shortest path from all the nodes in the graph (Done in the GPU).
 
 ### Prerequisites
 
@@ -35,17 +35,13 @@ You will need a Nvidia Graphics card installed on your computer along with Cuda,
 
 ### Installing
 
-Clone https://github.com/lramo062/parallelizeddijkstra-
-
-
-## Deployment
-
-I plan to continue to work on this project and multithread dijkstra's algorithm.
+* Clone the repo at: https://github.com/lramo062/parallelizeddijkstra-
 
 
 ## Contributing
 
-Feel free to contact be about contributing to the project!
+* Feel free to contact be about contributing to the project!
+* I plan to continue to work on this project and multithread dijkstra's algorithm.
 
 ## Authors
 
