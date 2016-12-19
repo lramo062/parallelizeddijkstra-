@@ -11,8 +11,8 @@ tries to achieve the same goal of finding ALL shortest paths between every node.
 The Floyd-Warshall Algorithm was found at https://github.com/akintsakis/apspFloydWarshallCuda.
 
 
-![Alt text] ()
-![Alt text]()
+![Alt text] (https://github.com/lramo062/parallelizeddijkstra-/blob/master/img/Screenshot%20from%202016-12-19%2012-23-46.png)
+![Alt text](https://github.com/lramo062/parallelizeddijkstra-/blob/master/img/Screenshot%20from%202016-12-19%2012-21-24.png)
 
 
 ## Getting Started
@@ -23,9 +23,10 @@ to run dijkstra on both the cpu and gpu run: ./dijk
 to run floy-warshal run: ./floyd
 
 You can play around with the code to display the random generated graph as well as the result graph:
+![Alt text] (https://github.com/lramo062/parallelizeddijkstra-/blob/master/img/Screenshot%20from%202016-12-19%2012-25-21.png)
 
-
-
+The first matrix represents the randomly generated graph.
+The second matrix represents the shortest path from all the nodes in the graph (Done in the GPU).
 
 ### Prerequisites
 
