@@ -29,7 +29,7 @@ int main() {
     float* result = (float *) malloc(*arrayLength * sizeof(float));
 
     createGraph(graph, *arrayLength); // Generate the graph & store in array
-    //printGraph(graph, *arrayLength); // Print the array
+    printGraph(graph, *arrayLength); // Print the array
     
     for(int vertex = 0; vertex<*numOfVertices; vertex++) {
         start_cpu = clock(); // start time
@@ -37,9 +37,9 @@ int main() {
         end_cpu = clock() - start_cpu; // end time
 
         total_time_cpu += ((double) end_cpu / CLOCKS_PER_SEC);
-        //printSolution(vertex, result, *numOfVertices);
+        printSolution(vertex, result, *numOfVertices);
     }
-    printf("TOTAL TIME CPU: %f\n", total_time_cpu);
+    //printf("TOTAL TIME CPU: %f\n", total_time_cpu);
     
     /***************************** GPU DIJKSTRA  ******************************/
 
@@ -73,8 +73,8 @@ int main() {
     cudaEventElapsedTime(&milliseconds, start, stop);
     // copy the results back to cpu
     cudaMemcpy(result, d_result, (*arrayLength * sizeof(float)), cudaMemcpyDeviceToHost);
-    //printGraph(result, *arrayLength);
-    printf("TOTAL TIME GPU: %.10f\n", milliseconds * .0001);
+    printGraph(result, *arrayLength);
+    //printf("TOTAL TIME GPU: %.10f\n", milliseconds * .0001);
 
     
     // free the gpu memory
